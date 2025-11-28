@@ -1,0 +1,435 @@
+/* ---------- Base ---------- */
+body {
+  margin: 0;
+  padding: 0 0 calc(100px + env(safe-area-inset-bottom)); /* 固定ボタンと被らない余白 */
+  background-color: #FFFDF5;
+  font-family: 'Noto Serif JP', serif;
+  color: #000;
+  -webkit-text-size-adjust: 100%;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  max-width: 375px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 20px;
+  box-sizing: border-box;
+}
+
+.top-content { text-align: left; }
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.catch {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+}
+
+.sub-description {
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* ---------- Primary CTA ---------- */
+.cta-button {
+  display: block;
+  background-color: #000;
+  color: #FFFDF5;
+  text-align: center;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 24px;
+}
+.cta-button:hover { background-color: #333; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 320px) {
+  .logo { font-size: 24px; }
+  .catch { font-size: 14px; }
+  .sub-description { font-size: 13px; }
+  .cta-button { font-size: 14px; padding: 12px 24px; }
+}
+@media (min-width: 430px) {
+  .hero { max-width: 430px; }
+  .logo { font-size: 32px; }
+  .catch { font-size: 18px; }
+  .sub-description { font-size: 15px; }
+  .cta-button { font-size: 17px; }
+}
+
+/* ---------- Option Buttons (共通) ---------- */
+/* personalcolor / gender / skintype の3つをまとめて指定 */
+.personalcolor-buttons,
+.gender-buttons,
+.skintype-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 20px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.personalcolor-option,
+.gender-option,
+.skintype-option {
+  padding: 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.personalcolor-option:hover,
+.gender-option:hover,
+.skintype-option:hover { background-color: #f2f2f2; }
+
+.personalcolor-option.selected,
+.gender-option.selected,
+.skintype-option.selected {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* ---------- Upload & Preview ---------- */
+.upload-box {
+  width: 180px;
+  height: 180px;
+  border: 1px dashed #000;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  margin: 40px auto 0;
+}
+.upload-box:hover { background-color: #f8f8f8; }
+
+.preview-image {
+  max-width: 80%;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 24px auto;
+  object-fit: contain;
+}
+
+/* ---------- Bottom Buttons ---------- */
+.button-row {
+  position: fixed;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  left: 0;
+  right: 0;
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.back-button, .next-button {
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.back-button {
+  color: #000;
+  border: 1px solid #000;
+  background-color: transparent;
+}
+.back-button:hover { background-color: #f0f0f0; }
+
+.next-button {
+  background-color: #000;
+  color: #FFFDF5;
+  border: none;
+}
+.next-button:hover { background-color: #333; }
+
+/* ---------- Color Result ---------- */
+.color-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.color-chip {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.color-code { font-size: 14px; line-height: 1.5; }
+.color-code .hex { font-weight: bold; font-size: 16px; }
+
+/* ---------- Product Card ---------- */
+.product-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 0;
+  border-top: 1px solid #ccc;
+  gap: 16px;
+}
+.product-info { flex: 1; }
+.button-group-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 5px;
+}
+.link-button {
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 13px;
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  min-width: 90px;
+}
+.link-button:hover { background-color: #f2f2f2; }
+
+/* どちらの表記でもマッチするように別名を追加 */
+.skintype-buttons, .skin-type-buttons,
+.personalcolor-buttons, .gender-buttons { /* 既存と合わせてOK */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap:  18px 20px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.skintype-option, .skin-type-option,
+.personalcolor-option, .gender-option {
+  padding: 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.skintype-option:hover, .skin-type-option:hover,
+.personalcolor-option:hover, .gender-option:hover { background:#f2f2f2; }
+
+.skintype-option.selected, .skin-type-option.selected,
+.personalcolor-option.selected, .gender-option.selected {
+  background:#000; color:#fff; border-color:#000;
+}
+
+/* 中央配置の土台（未追加ならstyle.cssへ） */
+.center-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+}
+/* ====== 肌タイプ選択ボタンの最終調整 ====== */
+.skin-type-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 20px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.skin-type-option {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 50px !important;           /* ← 高さをしっかり確保 */
+  font-size: 16px !important;        /* ← フォントサイズアップ */
+  font-weight: 400;
+  border: 1px solid #D0D0D0;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.skin-type-option:hover {
+  background-color: #fafafa;
+}
+
+.skin-type-option.selected {
+  background-color: #F9C1CF !important;
+  border-color: #F9C1CF !important;
+  color: #000 !important;
+  box-shadow: none !important;
+}
+/* ===== SKIN TYPE: 最終上書き（他より強く当てる） ===== */
+.skin-type-buttons{
+  max-width: 360px;           /* 少し広めに */
+  gap:  18px 20px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.skin-type-buttons .skin-type-option{
+  -webkit-appearance: none;   /* 既定ボタン無効化（iOS/Safari） */
+  appearance: none;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;               /* ← 高さを固定 */
+  padding: 0 16px;            /* ← 横にゆとり */
+  font-size: 16px;            /* ← 他ページと統一 */
+  font-weight: 400;
+  font-family: 'Noto Serif JP', serif;
+  white-space: nowrap;        /* 折り返し防止 */
+  border: 1px solid #D0D0D0;
+  border-radius: 12px;
+  background: #fff;
+  color: #000;
+  transition: background-color .25s ease, border-color .25s ease;
+}
+
+.skin-type-buttons .skin-type-option:hover{
+  background: #fafafa;
+}
+
+.skin-type-buttons .skin-type-option.selected{
+  background: #F9C1CF;
+  border-color: #F9C1CF;
+  color: #000;
+}
+/* ================================
+   SKIN TYPE ボタン最終調整（Tonee統一）
+================================ */
+.skin-type-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
+  gap: 18px 20px;
+  justify-content: center;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.skin-type-buttons button,
+.skin-type-option {
+  /* ブラウザデフォルトを全解除 */
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  
+  /* サイズと形 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;                /* ✅ 高さをしっかり確保 */
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border-radius: 14px;
+
+  /* フォント */
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 400;
+  font-size: 15px;             /* ✅ 他ページと揃える */
+  color: #000;
+
+  /* 枠線と背景 */
+  border: 1px solid #D0D0D0;
+  background-color: #fff;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.skin-type-buttons button:hover,
+.skin-type-option:hover {
+  background-color: #fafafa;
+}
+
+/* ✅ 選択時：淡ピンクに変更 */
+.skin-type-buttons button.selected,
+.skin-type-option.selected {
+  background-color: #F9C1CF;
+  border-color: #F9C1CF;
+  color: #000;
+}
+/* ===============================
+   PERSONAL COLOR ページ設定
+   （skintype と完全統一）
+=============================== */
+.personalcolor-buttons {
+  display: grid;
+  grid-template-columns:  repeat(2, minmax(140px, 1fr));
+  gap: 18px 20px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.personalcolor-option {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid #D0D0D0;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #000;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px;
+  font-weight: 400;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.personalcolor-option:hover {
+  background-color: #fafafa;
+}
+
+.personalcolor-option.selected {
+  background-color: #F9C1CF;
+  border-color: #F9C1CF;
+  color: #000;
+}

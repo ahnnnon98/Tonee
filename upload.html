@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tonee | 画像アップロード</title>
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    /* このページだけの微調整（枠に収めるための設定） */
+    .upload-wrap { text-align: center; }
+    .upload-title {
+      font-weight: 400; font-size: 16px; color: #000;
+      margin-bottom: 16px; text-align: center; letter-spacing: .5px;
+    }
+    /* 既存 .upload-box を強化して “中にきっちり表示” */
+    .upload-box{
+      position: relative;
+      width: 220px;             /* 既存 180px より少し広めに見やすく */
+      height: 220px;
+      margin: 16px auto 0;
+      border: 1px dashed #000;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;         /* はみ出し防止 */
+      background: #fff;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .upload-placeholder { color:#000; font-size:14px; line-height:1.6; }
+    /* プレビュー画像は枠に収まる（全体が見える＝contain） */
+    .upload-preview{
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: contain;      /* 収まるように表示（トリミングしない） */
+      display: none;            /* 初期は非表示。選択後に表示 */
+    }
+  </style>
+</head>
+
+<body>
+  <main class="hero">
+    <div class="top-content">
+      <h1 class="logo">Tonee</h1>
+      <p class="catch">“憧れ”から、“私らしさ”へ。</p>
+    </div>
+
+    <!-- 中央配置ブロック -->
+    <section class="center-area">
+      <div class="upload-wrap">
+
+        <!-- クリックでファイル選択。選んだら枠内にプレビュー表示 -->
+        <div id="uploadBox" class="upload-box" role="button" aria-label="画像をアップロード">
+          <span id="uploadPlaceholder" class="upload-placeholder">画像をアップロード</span>
+          <img id="uploadPreview" class="upload-preview" alt="選択画像のプレビュー">
+        </div>
+
+        <!-- 実際のファイル入力（隠す） -->
+        <input id="fileInput" type="file" accept="image/*" style="display:none">
+      </div>
+    </section>
+
+    <div class="button-row">
+      <a class="back-button" href="./personalcolor.html">← Back</a>
+      <a id="nextBtn" class="next-button" href="./chooseparts.html">Next →</a>
+    </div>
+  </main>
+
+  <script>
+  const uploadBox = document.getElementById('uploadBox');
+  const fileInput = document.getElementById('fileInput');
+  const previewImg = document.getElementById('uploadPreview');
+  const placeholder = document.getElementById('uploadPlaceholder');
+  const nextBtn = document.getElementById('nextBtn');
+
+  // Nextボタンの有効/無効
+  function setNextEnabled(enabled){
+    nextBtn.style.opacity = enabled ? 1 : .5;
+    nextBtn.style.pointerEvents = enabled ? 'auto' : 'none';
+    nextBtn.setAttribute('aria-disabled', String(!enabled));
+  }
+
+  // UIを初期状態に戻す（前回の画像をクリア）
+  function resetUploadUI(){
+    previewImg.removeAttribute('src');
+    previewImg.style.display = 'none';
+    placeholder.style.display = 'block';
+    localStorage.removeItem('tonee_uploaded_image');  // ←前の画像を消す
+    setNextEnabled(false);
+  }
+
+  // ページ初回ロード時：必ず初期化
+  document.addEventListener('DOMContentLoaded', resetUploadUI);
+
+  // ブラウザの戻る（bfcache）対策：これでも初期化
+  window.addEventListener('pageshow', (e)=>{ 
+    if (e.persisted) resetUploadUI(); 
+  });
+
+  // クリックで画像選択
+  uploadBox.addEventListener('click', () => fileInput.click());
+
+  // ファイル選択 → プレビュー表示 & 保存
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      previewImg.src = e.target.result;
+      previewImg.style.display = 'block';
+      placeholder.style.display = 'none';
+
+      localStorage.setItem('tonee_uploaded_image', e.target.result);
+      setNextEnabled(true);
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tonee - あなたにおすすめのコスメ</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- このページは長文なので、中央固定せず縦に流す -->
+  <style>
+    .hero {
+      height: auto;            /* ← 100vhを解除 */
+      min-height: 0;
+      justify-content: flex-start;
+      padding-bottom: 120px;   /* 下部余白（固定ボタンと干渉させない） */
+    }
+  .top-content { margin-bottom: 32px; }         /* ← キャッチの下に余白 */
+  .preview-frame { margin: 24px auto 0 !important; }  /* ← 画像枠の上にも少し余白 */
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="top-content">
+      <h1 class="logo">Tonee</h1>
+      <p class="catch">“憧れ”から、“私らしさ”へ。</p>
+    </div>
+
+    <!-- アップロード画像のプレビュー -->
+    <div class="preview-frame" style="width:260px;height:260px;border-radius:16px;overflow:hidden;margin:0 auto;">
+      <img id="recImage" alt="選択画像プレビュー" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+
+    <!-- 色情報（既存レイアウトのまま） -->
+    <div class="color-info">
+      <div class="color-chip" style="background-color:#9d5853;"></div>
+      <div class="color-code">
+        <p class="hex">#9d5853</p>
+        <p>イエベ秋</p>
+        <p>– オータムタイプ</p>
+      </div>
+    </div>
+    <!-- ====== PRODUCT CARDS（あなたの既存フォーマットを温存） ====== -->
+    <div class="product-card">
+      <div class="product-info">
+        <h2>CHANEL</h2>
+        <p>ルージュ アリュール ラック<br>#62 スティル</p>
+        <ul>
+          <li>ツヤ／ややセミシアー</li>
+          <li>ローズウッド寄りの落ち着き</li>
+        </ul>
+      </div>
+      <div class="button-group-vertical">
+        <a href="#" class="link-button">公式サイト</a>
+        <a href="#" class="link-button">Rakuten</a>
+        <a href="#" class="link-button">Amazon</a>
+        <a href="#" class="link-button">@cosme</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-info">
+        <h2>HERA</h2>
+        <p>ルージュ クラッシィ<br>#479 シティブラウン</p>
+        <ul>
+          <li>クリーミー／ややツヤ</li>
+          <li>ブラウン寄りローズシェード</li>
+        </ul>
+      </div>
+      <div class="button-group-vertical">
+        <a href="#" class="link-button">公式サイト</a>
+        <a href="#" class="link-button">Rakuten</a>
+        <a href="#" class="link-button">Amazon</a>
+        <a href="#" class="link-button">@cosme</a>
+      </div>
+    </div>
+
+    <!-- （以降のカードもこのまま続けてOK） -->
+
+  </section>
+
+  <!-- 画像をlocalStorageから復元（upload.htmlと同じキーを使用） -->
+  <script>
+    (function showUploaded(){
+      const img = document.getElementById('recImage');
+      const saved = localStorage.getItem('tonee_uploaded_image');
+      if (img && saved) {
+        img.src = saved;
+      } else {
+        alert('画像がまだ選ばれていません。アップロード画面に戻ります。');
+        location.href = './upload.html';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tonee | 肌タイプ</title>
+  <link rel="stylesheet" href="./style.css" />
+
+  <style>
+    /* --- ページ固有デザイン調整 --- */
+    h2.page-title {
+      font-weight: 400;
+      font-size: 16px;
+      color: #000;
+      margin-bottom: 28px;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="hero">
+    <div class="top-content">
+      <h1 class="logo">Tonee</h1>
+      <p class="catch">“憧れ”から、“私らしさ”へ。</p>
+    </div>
+
+    <!-- 中央配置 -->
+    <section class="center-area">
+      <div>
+        <h2 class="page-title">あなたの肌タイプは？</h2>
+
+        <div class="skin-type-buttons">
+          <button class="skin-type-option" data-value="dry">乾燥肌</button>
+          <button class="skin-type-option" data-value="oily">脂性肌</button>
+          <button class="skin-type-option" data-value="combo">混合肌</button>
+          <button class="skin-type-option" data-value="sensitive">敏感肌</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="button-row">
+      <a class="back-button" href="./index.html">← Back</a>
+      <a id="nextBtn" class="next-button" href="./personalcolor.html">Next →</a>
+    </div>
+  </main>
+
+  <script>
+  const skinButtons = document.querySelectorAll('.skin-type-option');
+  const skinNextBtn = document.getElementById('nextBtn');
+
+  function setSkinNextEnabled(enabled){
+    skinNextBtn.style.opacity = enabled ? 1 : 0.5;
+    skinNextBtn.style.pointerEvents = enabled ? 'auto' : 'none';
+    skinNextBtn.setAttribute('aria-disabled', String(!enabled));
+  }
+
+  // 👉 毎回「未選択＆Next無効」からスタート
+  function resetSkinSelection(){
+    skinButtons.forEach(b => b.classList.remove('selected'));
+    localStorage.removeItem('tonee_skin_type');
+    setSkinNextEnabled(false);
+  }
+
+  // ページ表示時＆ブラウザ戻る時、必ずリセット
+  document.addEventListener('DOMContentLoaded', resetSkinSelection);
+  window.addEventListener('pageshow', (e)=>{ if (e.persisted) resetSkinSelection(); });
+
+  // ボタンを押したらそのボタンだけ選択状態にしてNext有効化
+  skinButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      skinButtons.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      localStorage.setItem('tonee_skin_type', btn.dataset.value); // どのタイプかは保存だけしておく
+      setSkinNextEnabled(true);
+    });
+  });
+</script>
+</body>
+</html>

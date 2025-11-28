@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tonee | パーソナルカラー</title>
+  <link rel="stylesheet" href="./style.css" />
+
+  <style>
+    h2.page-title {
+      font-weight: 400;
+      font-size: 16px;
+      color: #000;
+      margin-bottom: 28px;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="hero">
+    <div class="top-content">
+      <h1 class="logo">Tonee</h1>
+      <p class="catch">“憧れ”から、“私らしさ”へ。</p>
+    </div>
+
+    <section class="center-area">
+      <div>
+        <h2 class="page-title">あなたのパーソナルカラーは？</h2>
+
+        <div class="personalcolor-buttons">
+          <button class="personalcolor-option" data-value="spring">イエベ春</button>
+          <button class="personalcolor-option" data-value="summer">ブルベ夏</button>
+          <button class="personalcolor-option" data-value="autumn">イエベ秋</button>
+          <button class="personalcolor-option" data-value="winter">ブルベ冬</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="button-row">
+      <a class="back-button" href="./skintype.html">← Back</a>
+      <a id="nextBtn" class="next-button" href="./upload.html">Next →</a>
+    </div>
+  </main>
+
+  <script>
+  const colorButtons = document.querySelectorAll('.personalcolor-option');
+  const colorNextBtn = document.getElementById('nextBtn');
+
+  function setColorNextEnabled(enabled){
+    colorNextBtn.style.opacity = enabled ? 1 : 0.5;
+    colorNextBtn.style.pointerEvents = enabled ? 'auto' : 'none';
+    colorNextBtn.setAttribute('aria-disabled', String(!enabled));
+  }
+
+  function resetColorSelection(){
+    colorButtons.forEach(b => b.classList.remove('selected'));
+    localStorage.removeItem('tonee_personal_color');
+    setColorNextEnabled(false);
+  }
+
+  document.addEventListener('DOMContentLoaded', resetColorSelection);
+  window.addEventListener('pageshow', (e)=>{ if (e.persisted) resetColorSelection(); });
+
+  colorButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      colorButtons.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      localStorage.setItem('tonee_personal_color', btn.dataset.value);
+      setColorNextEnabled(true);
+    });
+  });
+</script>
+</body>
+</html>
