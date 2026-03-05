@@ -3,93 +3,326 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tonee - あなたにおすすめのコスメ</title>
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- このページは長文なので、中央固定せず縦に流す -->
+  <title>Tonee | 分析結果</title>
+  <link rel="stylesheet" href="./style.css" />
   <style>
-    .hero {
-      height: auto;            /* ← 100vhを解除 */
-      min-height: 0;
-      justify-content: flex-start;
-      padding-bottom: 120px;   /* 下部余白（固定ボタンと干渉させない） */
+    .result-section {
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
+      padding: 0 16px;
     }
-  .top-content { margin-bottom: 32px; }         /* ← キャッチの下に余白 */
-  .preview-frame { margin: 24px auto 0 !important; }  /* ← 画像枠の上にも少し余白 */
+    .color-analysis-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 400;
+      color: #999;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .season-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #F9C1CF, #FFE4EC);
+      color: #C9668A;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+    .season-comment {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.6;
+    }
+    .color-swatches {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .swatch-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .swatch-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,0,0,0.08);
+    }
+    .swatch-label {
+      font-size: 10px;
+      color: #666;
+      text-align: center;
+    }
+    .recommend-section { margin-bottom: 16px; }
+    .section-header {
+      font-size: 13px;
+      color: #333;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .part-badge {
+      background: #F9C1CF;
+      color: #C9668A;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .product-color-dot {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 2px solid rgba(0,0,0,0.08);
+    }
+    .product-info { flex: 1; min-width: 0; }
+    .product-brand { font-size: 11px; color: #999; margin-bottom: 2px; }
+    .product-name {
+      font-size: 13px;
+      color: #333;
+      font-weight: 500;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .product-color-name { font-size: 11px; color: #C9668A; margin-bottom: 6px; }
+    .product-reason { font-size: 11px; color: #888; line-height: 1.5; margin-bottom: 8px; }
+    .product-price { font-size: 12px; color: #333; font-weight: 500; margin-bottom: 8px; }
+    .product-links { display: flex; gap: 6px; flex-wrap: wrap; }
+    .product-link {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      color: #555;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .product-link:hover { background: #F9C1CF; border-color: #F9C1CF; color: #C9668A; }
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 0 40px;
+      max-width: 340px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .btn-retry {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      border: 1.5px solid #F9C1CF;
+      border-radius: 30px;
+      color: #C9668A;
+      text-decoration: none;
+      font-size: 14px;
+      background: #fff;
+    }
+    .btn-top {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      background: #000;
+      border-radius: 30px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .loading-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #C9668A;
+      font-size: 14px;
+    }
+    .no-result { text-align: center; padding: 20px; color: #999; font-size: 13px; }
+    .uploaded-preview {
+      width: 180px;
+      height: 180px;
+      border-radius: 16px;
+      object-fit: cover;
+      margin: 0 auto 16px;
+      display: block;
+    }
+    .confidence-bar {
+      background: #f0f0f0;
+      border-radius: 10px;
+      height: 6px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .confidence-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F9C1CF, #C9668A);
+      border-radius: 10px;
+      transition: width 1s ease;
+    }
   </style>
 </head>
 <body>
-  <section class="hero">
+  <main class="hero" style="padding-bottom: 0;">
     <div class="top-content">
       <h1 class="logo">Tonee</h1>
-      <p class="catch">“憧れ”から、“私らしさ”へ。</p>
+      <p class="catch">"憧れ"から、"私らしさ"へ。</p>
     </div>
 
-    <!-- アップロード画像のプレビュー -->
-    <div class="preview-frame" style="width:260px;height:260px;border-radius:16px;overflow:hidden;margin:0 auto;">
-      <img id="recImage" alt="選択画像プレビュー" style="width:100%;height:100%;object-fit:cover;display:block;">
+    <div id="resultContainer" class="result-section" style="display:none">
+      <img id="uploadedPreview" class="uploaded-preview" alt="分析した画像" style="display:none">
+      <div class="color-analysis-card">
+        <div class="card-title">Color Analysis</div>
+        <div><span class="season-badge" id="seasonBadge">—</span></div>
+        <div class="confidence-bar">
+          <div class="confidence-fill" id="confidenceFill" style="width:0%"></div>
+        </div>
+        <p class="season-comment" id="seasonComment" style="margin-top:8px"></p>
+        <div class="color-swatches" id="colorSwatches"></div>
+      </div>
+      <div id="recommendationsContainer"></div>
     </div>
 
-    <!-- 色情報（既存レイアウトのまま） -->
-    <div class="color-info">
-      <div class="color-chip" style="background-color:#9d5853;"></div>
-      <div class="color-code">
-        <p class="hex">#9d5853</p>
-        <p>イエベ秋</p>
-        <p>– オータムタイプ</p>
-      </div>
+    <div id="loadingState" class="loading-state">分析結果を読み込み中...</div>
+
+    <div class="action-buttons" style="padding-top:8px;">
+      <a href="./upload.html" class="btn-retry">もう一度分析する</a>
+      <a href="./index.html" class="btn-top">トップに戻る</a>
     </div>
-    <!-- ====== PRODUCT CARDS（あなたの既存フォーマットを温存） ====== -->
-    <div class="product-card">
-      <div class="product-info">
-        <h2>CHANEL</h2>
-        <p>ルージュ アリュール ラック<br>#62 スティル</p>
-        <ul>
-          <li>ツヤ／ややセミシアー</li>
-          <li>ローズウッド寄りの落ち着き</li>
-        </ul>
-      </div>
-      <div class="button-group-vertical">
-        <a href="#" class="link-button">公式サイト</a>
-        <a href="#" class="link-button">Rakuten</a>
-        <a href="#" class="link-button">Amazon</a>
-        <a href="#" class="link-button">@cosme</a>
-      </div>
-    </div>
+  </main>
 
-    <div class="product-card">
-      <div class="product-info">
-        <h2>HERA</h2>
-        <p>ルージュ クラッシィ<br>#479 シティブラウン</p>
-        <ul>
-          <li>クリーミー／ややツヤ</li>
-          <li>ブラウン寄りローズシェード</li>
-        </ul>
-      </div>
-      <div class="button-group-vertical">
-        <a href="#" class="link-button">公式サイト</a>
-        <a href="#" class="link-button">Rakuten</a>
-        <a href="#" class="link-button">Amazon</a>
-        <a href="#" class="link-button">@cosme</a>
-      </div>
-    </div>
-
-    <!-- （以降のカードもこのまま続けてOK） -->
-
-  </section>
-
-  <!-- 画像をlocalStorageから復元（upload.htmlと同じキーを使用） -->
   <script>
-    (function showUploaded(){
-      const img = document.getElementById('recImage');
-      const saved = localStorage.getItem('tonee_uploaded_image');
-      if (img && saved) {
-        img.src = saved;
-      } else {
-        alert('画像がまだ選ばれていません。アップロード画面に戻ります。');
-        location.href = './upload.html';
+    const SEASON_LABELS = {
+      spring: 'イエベ春 🌸',
+      summer: 'ブルベ夏 ☁️',
+      autumn: 'イエベ秋 🍂',
+      winter: 'ブルベ冬 ❄️'
+    };
+    const PART_LABELS = {
+      lip: 'リップ 💋',
+      cheek: 'チーク 🌸',
+      eye: 'アイシャドウ ✨'
+    };
+
+    function loadResults() {
+      const loadingState = document.getElementById('loadingState');
+      const resultContainer = document.getElementById('resultContainer');
+      const rawResult = localStorage.getItem('tonee_analysis_result');
+      const uploadedImage = localStorage.getItem('tonee_uploaded_image');
+
+      if (!rawResult) {
+        loadingState.textContent = '分析結果がありません。もう一度試してください。';
+        return;
       }
-    })();
+
+      let data;
+      try { data = JSON.parse(rawResult); }
+      catch { loadingState.textContent = 'データの読み込みに失敗しました。'; return; }
+
+      if (uploadedImage) {
+        const img = document.getElementById('uploadedPreview');
+        img.src = uploadedImage;
+        img.style.display = 'block';
+      }
+
+      const pcAnalysis = data.analysis?.personalColorAnalysis || {};
+      const season = pcAnalysis.detectedSeason || localStorage.getItem('tonee_personal_color') || 'spring';
+      document.getElementById('seasonBadge').textContent = SEASON_LABELS[season] || season;
+      document.getElementById('seasonComment').textContent = pcAnalysis.comment || '';
+
+      const confidence = Math.round((pcAnalysis.confidence || 0.7) * 100);
+      setTimeout(() => {
+        document.getElementById('confidenceFill').style.width = `${confidence}%`;
+      }, 200);
+
+      const swatchContainer = document.getElementById('colorSwatches');
+      const partsAnalysis = data.analysis?.partsAnalysis || {};
+      for (const [part, info] of Object.entries(partsAnalysis)) {
+        if (!info) continue;
+        const item = document.createElement('div');
+        item.className = 'swatch-item';
+        item.innerHTML = `
+          <div class="swatch-circle" style="background:${info.color}"></div>
+          <div class="swatch-label">${PART_LABELS[part] || part}</div>
+          <div class="swatch-label" style="color:#999">${info.colorName || ''}</div>
+        `;
+        swatchContainer.appendChild(item);
+      }
+
+      const recommendations = data.recommendations || [];
+      const container = document.getElementById('recommendationsContainer');
+
+      if (recommendations.length === 0) {
+        container.innerHTML = '<p class="no-result">推薦コスメが見つかりませんでした。</p>';
+      } else {
+        const grouped = {};
+        for (const rec of recommendations) {
+          const part = rec.part || 'other';
+          if (!grouped[part]) grouped[part] = [];
+          grouped[part].push(rec);
+        }
+        for (const [part, items] of Object.entries(grouped)) {
+          const section = document.createElement('div');
+          section.className = 'recommend-section';
+          section.innerHTML = `
+            <div class="section-header">
+              <span>あなたに似合う</span>
+              <span class="part-badge">${PART_LABELS[part] || part}</span>
+            </div>
+          `;
+          for (const item of items) {
+            const colorHex = item.colors?.[0]?.hex || '#ddd';
+            const colorName = item.colors?.[0]?.name || '';
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+              <div class="product-color-dot" style="background:${colorHex}"></div>
+              <div class="product-info">
+                <div class="product-brand">${item.brand}</div>
+                <div class="product-name">${item.name}</div>
+                <div class="product-color-name">${colorName}</div>
+                <div class="product-reason">${item.matchReason || ''}</div>
+                <div class="product-price">¥${(item.price || 0).toLocaleString()}</div>
+                <div class="product-links">
+                  ${item.links?.official ? `<a href="${item.links.official}" target="_blank" class="product-link">公式</a>` : ''}
+                  ${item.links?.rakuten ? `<a href="${item.links.rakuten}" target="_blank" class="product-link">楽天</a>` : ''}
+                  ${item.links?.amazon ? `<a href="${item.links.amazon}" target="_blank" class="product-link">Amazon</a>` : ''}
+                  ${item.links?.cosme ? `<a href="${item.links.cosme}" target="_blank" class="product-link">@cosme</a>` : ''}
+                </div>
+              </div>
+            `;
+            section.appendChild(card);
+          }
+          container.appendChild(section);
+        }
+      }
+
+      loadingState.style.display = 'none';
+      resultContainer.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', loadResults);
   </script>
 </body>
 </html>
