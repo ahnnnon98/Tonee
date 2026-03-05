@@ -6,11 +6,18 @@
   <title>Tonee | パーツ選択</title>
   <link rel="stylesheet" href="./style.css" />
   <style>
+    .chooseparts-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 0 20px;
+    }
     h2.page-title {
       font-weight: 400;
       font-size: 16px;
       color: #000;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       text-align: center;
       letter-spacing: 0.5px;
     }
@@ -18,45 +25,18 @@
       font-size: 12px;
       color: #666;
       text-align: center;
-      margin-bottom: 20px;
-    }
-    .parts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto 16px;
-    }
-    .part-option {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      padding: 12px 8px;
-      border: 1.5px solid #ddd;
-      border-radius: 14px;
-      background: #fff;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 13px;
-      color: #333;
-      font-family: 'Noto Serif JP', serif;
-    }
-    .part-option .icon { font-size: 24px; }
-    .part-option.selected {
-      border-color: #F9C1CF;
-      background: #FFF0F4;
-      color: #C9668A;
+      margin-bottom: 16px;
     }
     .preview-area {
-      position: relative;
-      width: 200px;
-      height: 200px;
-      margin: 0 auto 12px;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 16px;
       border-radius: 16px;
       overflow: hidden;
       background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .preview-area img {
       width: 100%;
@@ -64,13 +44,36 @@
       object-fit: cover;
     }
     .preview-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: #aaa;
       font-size: 13px;
+    }
+    .parts-grid {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .part-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 18px;
+      border: 1.5px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+      color: #333;
+      font-family: inherit;
+    }
+    .part-option .icon { font-size: 24px; }
+    .part-option.selected {
+      border-color: #F9C1CF;
+      background: #FFF0F4;
+      color: #C9668A;
     }
     .loading-overlay {
       display: none;
@@ -93,18 +96,8 @@
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text {
-      font-size: 14px;
-      color: #C9668A;
-      font-family: 'Noto Serif JP', serif;
-    }
-    .loading-steps {
-      font-size: 12px;
-      color: #aaa;
-      text-align: center;
-      max-width: 240px;
-      line-height: 1.8;
-    }
+    .loading-text { font-size: 14px; color: #C9668A; }
+    .loading-steps { font-size: 12px; color: #aaa; text-align: center; max-width: 240px; line-height: 1.8; }
     .error-msg {
       display: none;
       background: #FFF0F4;
@@ -128,27 +121,29 @@
       <p class="catch">"憧れ"から、"私らしさ"へ。</p>
     </div>
     <section class="center-area">
-      <h2 class="page-title">分析するパーツを選んでね</h2>
-      <p class="page-subtitle">複数選択OK</p>
-      <div class="preview-area">
-        <img id="previewImg" alt="アップロード画像" style="display:none">
-        <div id="previewPlaceholder" class="preview-placeholder">画像なし</div>
+      <div class="chooseparts-wrap">
+        <h2 class="page-title">分析するパーツを選んでね</h2>
+        <p class="page-subtitle">1つ選択してください</p>
+        <div class="preview-area">
+          <img id="previewImg" alt="アップロード画像" style="display:none">
+          <div id="previewPlaceholder" class="preview-placeholder">画像なし</div>
+        </div>
+        <div class="parts-grid">
+          <button class="part-option" data-part="lip">
+            <span class="icon">💋</span>
+            <span>リップ</span>
+          </button>
+          <button class="part-option" data-part="cheek">
+            <span class="icon">🌸</span>
+            <span>チーク</span>
+          </button>
+          <button class="part-option" data-part="eye">
+            <span class="icon">✨</span>
+            <span>アイシャドウ</span>
+          </button>
+        </div>
+        <div id="errorMsg" class="error-msg"></div>
       </div>
-      <div class="parts-grid">
-        <button class="part-option" data-part="lip">
-          <span class="icon">💋</span>
-          <span>リップ</span>
-        </button>
-        <button class="part-option" data-part="cheek">
-          <span class="icon">🌸</span>
-          <span>チーク</span>
-        </button>
-        <button class="part-option" data-part="eye">
-          <span class="icon">✨</span>
-          <span>アイシャドウ</span>
-        </button>
-      </div>
-      <div id="errorMsg" class="error-msg"></div>
     </section>
     <div class="button-row">
       <a class="back-button" href="./upload.html">← Back</a>
@@ -157,11 +152,13 @@
       </button>
     </div>
   </main>
+
   <div id="loadingOverlay" class="loading-overlay">
     <div class="spinner"></div>
     <div class="loading-text">AIが分析中...</div>
     <div class="loading-steps" id="loadingStep">画像を読み込んでいます</div>
   </div>
+
   <script>
     const API_BASE = 'https://tonee-backend.vercel.app';
     const partButtons = document.querySelectorAll('.part-option');
@@ -171,37 +168,63 @@
     const errorMsg = document.getElementById('errorMsg');
     const loadingOverlay = document.getElementById('loadingOverlay');
     const loadingStep = document.getElementById('loadingStep');
-    let selectedParts = new Set();
+
+    let selectedPart = null; // 単一選択に変更
+
     const uploadedImage = localStorage.getItem('tonee_uploaded_image');
     if (uploadedImage) {
       previewImg.src = uploadedImage;
       previewImg.style.display = 'block';
       previewPlaceholder.style.display = 'none';
     }
+
     partButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const part = btn.dataset.part;
-        if (selectedParts.has(part)) {
-          selectedParts.delete(part);
-          btn.classList.remove('selected');
+        // 他のボタンの選択を解除
+        partButtons.forEach(b => b.classList.remove('selected'));
+        if (selectedPart === part) {
+          selectedPart = null;
         } else {
-          selectedParts.add(part);
+          selectedPart = part;
           btn.classList.add('selected');
         }
         updateAnalyzeBtn();
       });
     });
+
     function updateAnalyzeBtn() {
-      const enabled = selectedParts.size > 0 && uploadedImage;
+      const enabled = selectedPart !== null && uploadedImage;
       analyzeBtn.style.opacity = enabled ? 1 : 0.5;
       analyzeBtn.style.pointerEvents = enabled ? 'auto' : 'none';
     }
+
+    // 画像をリサイズして軽量化
+    function resizeImage(base64, maxWidth, quality) {
+      return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let w = img.width, h = img.height;
+          if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+          canvas.width = w;
+          canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = base64;
+      });
+    }
+
     analyzeBtn.addEventListener('click', async () => {
-      if (!uploadedImage || selectedParts.size === 0) return;
+      if (!uploadedImage || !selectedPart) return;
+
       const skinType = localStorage.getItem('tonee_skin_type') || 'combo';
       const personalColor = localStorage.getItem('tonee_personal_color') || 'spring';
+
       errorMsg.classList.remove('active');
       loadingOverlay.classList.add('active');
+
       const steps = [
         '画像を読み込んでいます...',
         'AIがパーツを認識中...',
@@ -214,33 +237,43 @@
         stepIdx = (stepIdx + 1) % steps.length;
         loadingStep.textContent = steps[stepIdx];
       }, 1500);
+
       try {
+        // 画像を800px以下にリサイズして送信サイズを削減
+        const resized = await resizeImage(uploadedImage, 800, 0.8);
+
         const response = await fetch(`${API_BASE}/api/analyze`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            image: uploadedImage,
-            parts: Array.from(selectedParts),
+            image: resized,
+            parts: [selectedPart],
             skinType,
             personalColor
           })
         });
+
         clearInterval(stepInterval);
-        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({}));
+          throw new Error(err.error || `API Error: ${response.status}`);
+        }
+
         const data = await response.json();
         localStorage.setItem('tonee_analysis_result', JSON.stringify(data));
-        localStorage.setItem('tonee_selected_parts', JSON.stringify(Array.from(selectedParts)));
+        localStorage.setItem('tonee_selected_parts', JSON.stringify([selectedPart]));
         loadingOverlay.classList.remove('active');
         window.location.href = './recommend.html';
+
       } catch (err) {
         clearInterval(stepInterval);
         loadingOverlay.classList.remove('active');
         console.error('Analysis failed:', err);
-        errorMsg.textContent = '分析中にエラーが発生しました。しばらくしてからもう一度お試しください。';
+        errorMsg.textContent = `エラー: ${err.message || '分析に失敗しました。もう一度お試しください。'}`;
         errorMsg.classList.add('active');
       }
     });
   </script>
 </body>
 </html>
-
